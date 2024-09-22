@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
 import logo from '../assets/logo.svg';
+import { NavigationProps } from '../models/ui';
 
-const Navigation = ({ account, setAccount }) => {
-    const connectHandler = async () => {
+const Navigation: React.FC<NavigationProps> = ({ account, setAccount }) => {
+    const connectHandler = async (): void => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = ethers.utils.getAddress(accounts[0])
         setAccount(account);
