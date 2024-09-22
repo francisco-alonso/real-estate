@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 
 // Components
-import Navigation from './components/Navigation';
-import Search from './components/Search';
-import Home from './components/Home';
+import Navigation from './components/Navigation.tsx';
+import Search from './components/Search.tsx';
+import Home from './components/Home.tsx';
 
 // ABIs
 import RealEstate from './abis/RealEstate.json'
@@ -24,12 +24,14 @@ function App() {
   const [toggle, setToggle] = useState(false);
 
   const loadBlockchainData = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider: ethers.providers.Web3Provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
-    const network = await provider.getNetwork()
+    
+    const network: Promise<ethers.providers.Network> = await provider.getNetwork()
 
     const realEstate = new ethers.Contract(config[network.chainId].realEstate.address, RealEstate, provider)
     const totalSupply = await realEstate.totalSupply()
+    
     const homes = []
 
     for (var i = 1; i <= totalSupply; i++) {
@@ -38,7 +40,7 @@ function App() {
       const metadata = await response.json()
       homes.push(metadata)
     }
-
+    
     setHomes(homes)
 
     const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
